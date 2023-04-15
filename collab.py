@@ -6,7 +6,7 @@ def create_grid(rows, cols):
     return grid
 
 def display_grid(grid):
-    print('    '.join(map(str, range(1, len(grid[0]) + 1))))
+    print("  " + '   '.join(map(str, range(1, len(grid[0]) + 1))))
     for row in grid:
         print('│ ' + ' │ '.join(row) + ' │')
         print('────' * len(row) + '│')
