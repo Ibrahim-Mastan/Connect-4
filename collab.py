@@ -16,4 +16,4 @@ cols = 7
 grid = create_grid(rows, cols)
 display_grid(grid)
 
-##adding comment to show how to work with github 
+##adding comment for Muhammad.
