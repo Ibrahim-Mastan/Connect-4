@@ -10,7 +10,10 @@ def display_grid(grid):
     for row in grid:
         print('│ ' + ' │ '.join(row) + ' │')
         print('────' * len(row) + '│')
-
+def do_something():
+    print("Hello")
+    value = 73
+    return value
 rows = 6
 cols = 7
 grid = create_grid(rows, cols)
