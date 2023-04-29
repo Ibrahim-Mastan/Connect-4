@@ -13,6 +13,8 @@ def display_grid(grid):
 def do_something():
     print ("yo")
     value = 21
+    print("Hello")
+    value = 73
     return value
 rows = 6
 cols = 7
