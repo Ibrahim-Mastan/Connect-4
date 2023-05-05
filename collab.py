@@ -1,4 +1,4 @@
-WIDTH = 10
+WIDTH = 7
 HEIGHT = 7
 PLAYER_1_PIECE = "X"
 PLAYER_2_PIECE = "O"
@@ -53,7 +53,7 @@ def player_turn(player,grid):
     place_piece(x,grid,player)
 
 def place_piece(x,grid,player):
-    grid[1][x] = PLAYER_1_PIECE
+    grid[-1][x-1] = PLAYER_1_PIECE
 
 
 def game_ended(grid):
