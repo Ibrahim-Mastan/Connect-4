@@ -5,9 +5,9 @@ PLAYER_2_PIECE = "O"
 BLANK_PIECE = " "
 def create_grid(rows, cols):
     grid = []
-    for _ in range(rows):
-        row = [BLANK_PIECE] * cols
-        grid.append(row)
+    for _ in range(cols):
+        column = [BLANK_PIECE] * rows
+        grid.append(column)
     return grid
 
 def display_grid(grid):
@@ -38,14 +38,14 @@ def input_location():  #returns a location from the user or return -1 if error
 def column_full(x,grid):
     return False
 def validate_location_on_grid(x):
-    return  x >= 0 and x <= WIDTH
+    return  x > 0 and x <= WIDTH
 def player_turn(player,grid): 
     x = input_location()
     valid = False
     while not valid:
         if validate_location_on_grid(x):
             if not column_full(x,grid):
-                valid == True
+                valid = True
                 break
         print("Error try again")
         x = input_location()
@@ -56,7 +56,7 @@ def place_piece(x,grid,player):
     grid[-1][x-1] = PLAYER_1_PIECE
 
 
-def game_ended(grid):
+def game_ended(grid):#This is not complete
     return False
 
 main()
