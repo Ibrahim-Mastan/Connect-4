@@ -1,4 +1,4 @@
-WIDTH = 7
+WIDTH = 9
 HEIGHT = 7
 PLAYER_1_PIECE = "X"
 PLAYER_2_PIECE = "O"
@@ -37,13 +37,13 @@ def input_location():  #returns a location from the user or return -1 if error
 
 def column_full(x,grid):
     return False
-def validate_location_on_grid(x):
-    return  x > 0 and x <= WIDTH
+def validate_location_on_grid(x,grid):
+    return  x > 0 and x <= WIDTH and get_last_row(x,grid) != -1
 def player_turn(player,grid): 
     x = input_location()
     valid = False
     while not valid:
-        if validate_location_on_grid(x):
+        if validate_location_on_grid(x,grid):
             if not column_full(x,grid):
                 valid = True
                 break
@@ -51,10 +51,30 @@ def player_turn(player,grid):
         x = input_location()
     
     place_piece(x,grid,player)
-
+    return swap_player(player)
 def place_piece(x,grid,player):
-    grid[-1][x-1] = PLAYER_1_PIECE
+    row = get_last_row(x,grid)
+    if player == 1:
+        piece = PLAYER_1_PIECE
+    else:
+        piece = PLAYER_2_PIECE
+    grid[row][x-1] = piece
 
+def swap_player(player):
+    return player*-1
+
+def get_last_row(column,grid): 
+# get the last available row in the column or return -1 if full
+    row = HEIGHT-1
+    piece = grid[row][column-1]
+    while piece != BLANK_PIECE and row > 0:
+        row -= 1
+        piece = grid[row][column-1]
+    
+    if piece == BLANK_PIECE:
+
+        return row
+    return -1
 
 def game_ended(grid):#This is not complete
     return False
