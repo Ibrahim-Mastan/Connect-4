@@ -81,28 +81,28 @@ def game_ended(grid):
     for row in grid:
         for col in range(WIDTH - 3):
             if row[col] != BLANK_PIECE and row[col] == row[col + 1] == row[col + 2] == row[col + 3]:
-                print ("you won!")
+                print ("You won!, ggez!")
                 return True
 
     # Check columns for a win
     for col in range(WIDTH):
         for row in range(HEIGHT - 3):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row + 1][col] == grid[row + 2][col] == grid[row + 3][col]:
-                print ("you won!")
+                print ("You won!, ggez!")
                 return True
 
     # Check diagonals (top-left to bottom-right) for a win
     for col in range(WIDTH - 3):
         for row in range(HEIGHT - 3):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row + 1][col + 1] == grid[row + 2][col + 2] == grid[row + 3][col + 3]:
-                print ("you won!")
+                print ("You won!, ggez!")
                 return True
 
     # Check diagonals (top-right to bottom-left) for a win
     for col in range(WIDTH - 3):
         for row in range(3, HEIGHT):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row - 1][col + 1] == grid[row - 2][col + 2] == grid[row - 3][col + 3]:
-                print ("you won!")
+                print ("You won!, ggez!")
                 return True
 
     return False
