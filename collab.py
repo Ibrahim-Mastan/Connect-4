@@ -18,14 +18,22 @@ def display_grid(grid):
 def main():
 
     grid = create_grid(WIDTH, HEIGHT)
+    display_grid(grid)
     player_to_move = 1
-    while not game_ended(grid):
-        display_grid(grid)
+    while not game_drawn(grid):
         print("player 1 turn: ")
         player_to_move = player_turn(player_to_move,grid)
         display_grid(grid)
+        if game_won(grid):
+            print("player 1 wins!")
+            return
         print("player 2's turn: ")
         player_to_move = player_turn(player_to_move,grid)
+        display_grid(grid)
+        if game_won(grid):
+            print("player 2 wins!")
+            return
+    print("DRAW!!!")
 def input_location():  #returns a location from the user or return -1 if error
     x = input("Enter Location: ")
     
@@ -76,35 +84,40 @@ def get_last_row(column,grid):
         return row
     return -1
 
-def game_ended(grid):
+def game_won(grid):
     # Check rows for a win
     for row in grid:
         for col in range(WIDTH - 3):
             if row[col] != BLANK_PIECE and row[col] == row[col + 1] == row[col + 2] == row[col + 3]:
-                print ("you won!")
                 return True
 
     # Check columns for a win
     for col in range(WIDTH):
         for row in range(HEIGHT - 3):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row + 1][col] == grid[row + 2][col] == grid[row + 3][col]:
-                print ("you won!")
                 return True
 
     # Check diagonals (top-left to bottom-right) for a win
     for col in range(WIDTH - 3):
         for row in range(HEIGHT - 3):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row + 1][col + 1] == grid[row + 2][col + 2] == grid[row + 3][col + 3]:
-                print ("you won!")
                 return True
 
     # Check diagonals (top-right to bottom-left) for a win
     for col in range(WIDTH - 3):
         for row in range(3, HEIGHT):
             if grid[row][col] != BLANK_PIECE and grid[row][col] == grid[row - 1][col + 1] == grid[row - 2][col + 2] == grid[row - 3][col + 3]:
-                print ("you won!")
                 return True
 
     return False
+def game_drawn(grid):
+    if game_won(grid):
+        return False
+    for col in grid:
+        for piece in col:
+            if piece == BLANK_PIECE:
+                return False
+    return True
+
 
 main()
