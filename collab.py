@@ -1,3 +1,5 @@
+import random
+
 WIDTH = 7
 HEIGHT = 6
 PLAYER_1_PIECE = "X"
@@ -15,8 +17,44 @@ def display_grid(grid):
     for row in grid:
         print('│ ' + ' │ '.join(row) + ' │')
         print('────' * len(row) + '│')
+
+def menu():
+    print(""" 
+    1. player v player
+    2. player v random bot
+    3. player v smart bot
+
+    chooose an option(1-3): 
+    """)
+    choice = input("")
+    return choice
+
+def is_choice_valid(choice):
+    try:
+        choice = int(choice)
+    except:
+        return False
+    if choice < 1:
+        return False
+    elif choice > 3:
+        return False
+    else:
+        return True
+
 def main():
 
+    choice = menu()
+    while not is_choice_valid(choice):
+        choice = menu()
+    choice = int(choice)
+    if choice == 1:
+        player_V_Player()
+    elif choice == 2:
+        player_V_random_bot()
+    elif choice == 3:
+        player_V_smart_bot()
+
+def player_V_Player():
     grid = create_grid(WIDTH, HEIGHT)
     display_grid(grid)
     player_to_move = 1
@@ -34,6 +72,12 @@ def main():
             print("player 2 wins!")
             return
     print("DRAW!!!")
+
+def player_V_random_bot():
+    pass
+
+def player_V_smart_bot():
+    pass
 def input_location():  #returns a location from the user or return -1 if error
     x = input("Enter Location: ")
     
@@ -41,6 +85,10 @@ def input_location():  #returns a location from the user or return -1 if error
         x = int(x)
     except:
         x = -1
+    return x
+
+def input_random_location():
+    x = random.randint(1,WIDTH)
     return x
 
 def column_full(x,grid):
@@ -60,6 +108,23 @@ def player_turn(player,grid):
     
     place_piece(x,grid,player)
     return swap_player(player)
+
+def random_bot_turn(player,grid):
+    x = input_random_location()
+    valid = False
+    while not valid:
+        if validate_location_on_grid(x,grid):
+            if not column_full(x,grid):
+                valid = True
+                break
+        x = input_random_location()
+    
+    place_piece(x,grid,player)
+    return swap_player(player)
+
+def smart_bot_turn(grid):
+    pass
+
 def place_piece(x,grid,player):
     row = get_last_row(x,grid)
     if player == 1:
@@ -89,6 +154,7 @@ def game_won(grid):
     for row in grid:
         for col in range(WIDTH - 3):
             if row[col] != BLANK_PIECE and row[col] == row[col + 1] == row[col + 2] == row[col + 3]:
+                print ("You won!, ggez!")
                 return True
 
     # Check columns for a win
