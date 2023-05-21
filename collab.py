@@ -66,7 +66,93 @@ def player_V_Player():
         player_to_move = player_turn(player_to_move,grid)
 
 def player_V_random_bot():
-    pass
+   for row in board:
+        print('|'.join(row))
+print('---------------')
+
+def is_valid_move(board, col):
+    return board[0][col] == ' '
+
+def make_move(board, col, player):
+    for row in range(5, -1, -1):
+        if board[row][col] == ' ':
+            board[row][col] = player
+            break
+
+def is_winner(board, player):
+    # Check rows
+    for row in range(6):
+        for col in range(4):
+            if board[row][col] == player and board[row][col+1] == player and \
+                    board[row][col+2] == player and board[row][col+3] == player:
+                return True
+    # Check columns
+    for col in range(7):
+        for row in range(3):
+            if board[row][col] == player and board[row+1][col] == player and \
+                    board[row+2][col] == player and board[row+3][col] == player:
+                return True
+    # Check diagonal (top-left to bottom-right)
+    for row in range(3):
+        for col in range(4):
+            if board[row][col] == player and board[row+1][col+1] == player and \
+                    board[row+2][col+2] == player and board[row+3][col+3] == player:
+                return True
+    # Check diagonal (bottom-left to top-right)
+    for row in range(3, 6):
+        for col in range(4):
+            if board[row][col] == player and board[row-1][col+1] == player and \
+                    board[row-2][col+2] == player and board[row-3][col+3] == player:
+                return True
+    return False
+
+def random_bot_move(board):
+    valid_moves = [col for col in range(7) if is_valid_move(board, col)]
+    if valid_moves:
+        return random.choice(valid_moves)
+    else:
+        return None
+
+def player_V_random_bot():
+    board = [[' ' for _ in range(7)] for _ in range(6)]
+    player = 'X'
+    
+    while True:
+        display_grid(board)
+        
+        if player == 'X':
+            col = int(input("Enter your move (column number): "))  # Human player's move
+        else:
+            col = random_bot_move(board)  # Random bot's move
+
+        if col is None:
+            print("It's a draw!")
+            break
+        
+        if is_valid_move(board, col):
+            make_move(board, col, player)
+            if is_winner(board, player):
+                display_grid(board)
+                print(f"Player {player} wins!")
+                break
+            player = 'O' if player == 'X' else 'X'
+        else:
+            print("Invalid move. Try again.")
+
+player_V_random_bot()
+
+
+"""
+ grid = create_grid(WIDTH,HEIGHT)
+    player_to_move = 1
+    while not game_ended(grid):
+        display_grid(grid)
+        print("player 1 turn:   ")
+        player_to_move = random_bot_turn(random_bot_turn,grid)
+        display_grid(grid)
+        print("Bot's Move :    ")
+        random_to_move = random_bot_turn(random_to_move,grid)
+ """
 
 def player_V_smart_bot():
     pass
@@ -173,3 +259,4 @@ def game_ended(grid):
     return False
 
 main()
+menu()
