@@ -91,8 +91,26 @@ def player_V_random_bot():
             return
 
 
+
 def player_V_smart_bot():#need to code  this bot needs to try win and not lose rather than place randomly
-    pass
+    grid = create_grid(WIDTH,HEIGHT)
+    display_grid(grid)
+    player_to_move = 1
+    while not game_drawn(grid):
+        print("player 1 turn:   ")
+        player_to_move = player_turn(player_to_move,grid)
+        if game_won(grid):
+            print("player 1 wins!")
+            return
+        print("Smart Bot's Move :   ")
+        player_to_move = smart_bot_turn(grid)
+        display_grid(grid)
+        if game_won(grid):
+            print("Smart Bot wins!")
+            return
+
+
+
 def input_location():  #returns a location from the user or return -1 if error
     x = input("Enter Location: ")
     
@@ -138,7 +156,14 @@ def random_bot_turn(player,grid):
     return swap_player(player)
 
 def smart_bot_turn(grid):
-    pass
+    x = input_location()
+    valid = False
+    while not valid:
+        if validate_location_on_grid(x,grid):
+            if not column_full(x,grid):
+                valid = True
+                break
+            x = input_location()
 
 def place_piece(x,grid,player):
     row = get_last_row(x,grid)
@@ -201,4 +226,3 @@ def game_drawn(grid):
 
 
 main()
-
