@@ -156,14 +156,25 @@ def random_bot_turn(player,grid):
     return swap_player(player)
 
 def smart_bot_turn(grid):
-    x = input_location()
-    valid = False
-    while not valid:
-        if validate_location_on_grid(x,grid):
-            if not column_full(x,grid):
-                valid = True
-                break
-            x = input_location()
+    # x = input_location()
+    # valid = False
+    # while not valid:
+    #     if validate_location_on_grid(x,grid):
+    #         if not column_full(x,grid):
+    #             valid = True
+    #             break
+    #         x = input_location()
+
+    """
+    first go through every position and check if bot can win by placing the piece. if so place the piece and win, other move on.
+
+    then pick a location for the bot to place the piece (same as random bot turn)
+    then we need to verify that if the bot places this piece the opponent cannot win on the next turn
+    if not, we place the piece
+    else pick another position and check again(loop this until we find a position that does work or no more positions left)
+    then we are done
+    dont use chat gpt for this as it will just confuse you. 
+    """
 
 def place_piece(x,grid,player):
     row = get_last_row(x,grid)
