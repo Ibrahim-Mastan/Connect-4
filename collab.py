@@ -165,6 +165,8 @@ def smart_bot_turn(grid):
     #             break
     #         x = input_location()
 
+    
+    idk how to do this
     """
     first go through every position and check if bot can win by placing the piece. if so place the piece and win, other move on.
 
