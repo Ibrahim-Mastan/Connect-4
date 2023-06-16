@@ -103,7 +103,7 @@ def player_V_smart_bot():#need to code  this bot needs to try win and not lose r
             print("player 1 wins!")
             return
         print("Smart Bot's Move :   ")
-        player_to_move = smart_bot_turn(grid)
+        player_to_move = smart_bot_turn(grid,player_to_move)
         display_grid(grid)
         if game_won(grid):
             print("Smart Bot wins!")
@@ -155,7 +155,39 @@ def random_bot_turn(player,grid):
     place_piece(x,grid,player)
     return swap_player(player)
 
-def smart_bot_turn(grid):
+def smart_bot_turn(grid, player_to_move):
+    for column in range(1, WIDTH + 1):
+        if validate_location_on_grid(column, grid):
+            temp_grid = [row[:] for row in grid]
+            place_piece(column, temp_grid, player_to_move)
+
+            if game_won(temp_grid):
+                continue
+
+            opponent_piece = PLAYER_1_PIECE if player_to_move == -1 else PLAYER_2_PIECE
+            for opponent_column in range(1, WIDTH + 1):
+                if validate_location_on_grid(opponent_column, temp_grid):
+                    opponent_temp_grid = [row[:] for row in temp_grid]
+                    place_piece(opponent_column, opponent_temp_grid, -player_to_move)
+
+                    if game_won(opponent_temp_grid):
+                        break
+
+            else:
+                place_piece(column, grid, player_to_move)
+                return swap_player(player_to_move)
+
+    x = input_random_location()
+    valid = False
+    while not valid:
+        if validate_location_on_grid(x, grid):
+            if not column_full(x, grid):
+                valid = True
+                break
+        x = input_random_location()
+
+    place_piece(x, grid, player_to_move)
+    return swap_player(player_to_move)
     # x = input_location()
     # valid = False
     # while not valid:
@@ -166,7 +198,7 @@ def smart_bot_turn(grid):
     #         x = input_location()
 
     
-    idk how to do this
+    
     """
     first go through every position and check if bot can win by placing the piece. if so place the piece and win, other move on.
 
