@@ -99,6 +99,7 @@ def player_V_smart_bot():#need to code  this bot needs to try win and not lose r
     while not game_drawn(grid):
         print("player 1 turn:   ")
         player_to_move = player_turn(player_to_move,grid)
+        display_grid(grid)
         if game_won(grid):
             print("player 1 wins!")
             return
@@ -156,38 +157,62 @@ def random_bot_turn(player,grid):
     return swap_player(player)
 
 def smart_bot_turn(grid, player_to_move):
-    for column in range(1, WIDTH + 1):
-        if validate_location_on_grid(column, grid):
-            temp_grid = [row[:] for row in grid]
-            place_piece(column, temp_grid, player_to_move)
-
-            if game_won(temp_grid):
-                continue
-
-            opponent_piece = PLAYER_1_PIECE if player_to_move == -1 else PLAYER_2_PIECE
-            for opponent_column in range(1, WIDTH + 1):
-                if validate_location_on_grid(opponent_column, temp_grid):
-                    opponent_temp_grid = [row[:] for row in temp_grid]
-                    place_piece(opponent_column, opponent_temp_grid, -player_to_move)
-
-                    if game_won(opponent_temp_grid):
-                        break
-
-            else:
-                place_piece(column, grid, player_to_move)
+    # Check if bot can win by placing the piece
+    for col in range(1,WIDTH+1):
+        row = get_last_row(col, grid)
+        if row != -1:
+            #grid[col][row] = PLAYER_2_PIECE
+            place_piece(col,grid,player_to_move)
+            if game_won(grid):
                 return swap_player(player_to_move)
+            else:
+                #grid[col][row] = BLANK_PIECE
+                
+                empty_piece(col,grid)
+                
 
-    x = input_random_location()
+    # Pick a location for the bot to place the piece (same as random bot turn)
     valid = False
-    while not valid:
-        if validate_location_on_grid(x, grid):
-            if not column_full(x, grid):
+    count =  0
+    while not valid and count < 30:
+        col = input_random_location()
+        row = get_last_row(col, grid)
+        if row != -1:
+            # Verify that if the bot places this piece the opponent cannot win on the next turn
+            #grid[col][row] = PLAYER_2_PIECE
+            place_piece(col,grid,player_to_move)
+            if not can_opponent_win(grid,player_to_move):
                 valid = True
                 break
-        x = input_random_location()
+            else:
+                #grid[col][row] = BLANK_PIECE
+                empty_piece(col,grid)
+        
+        count += 1
+    
+    if count == 30:
+        col = input_random_location()
+        place_piece(col,grid,player_to_move)
 
-    place_piece(x, grid, player_to_move)
+
+    #place_piece(col, grid, player_to_move)
     return swap_player(player_to_move)
+
+def can_opponent_win(grid,player_to_move):
+    for col in range(1,WIDTH+1):
+        row = get_last_row(col, grid)
+        if row != -1:
+            #grid[col][row] = PLAYER_1_PIECE
+            place_piece(col,grid,swap_player(player_to_move))
+            if game_won(grid):
+                #grid[col][row] = BLANK_PIECE
+                empty_piece(col,grid)
+                return True
+            else:
+                #grid[col][row] = BLANK_PIECE
+                empty_piece(col,grid)
+    return False
+
     # x = input_location()
     # valid = False
     # while not valid:
@@ -217,6 +242,13 @@ def place_piece(x,grid,player):
     else:
         piece = PLAYER_2_PIECE
     grid[row][x-1] = piece
+
+def empty_piece(x,grid):
+    row = get_last_row(x,grid) + 1
+    
+    grid[row][x-1] = BLANK_PIECE
+
+
 
 def swap_player(player):
     return player*-1
